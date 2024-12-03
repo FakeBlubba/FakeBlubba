@@ -1,5 +1,4 @@
-# Federico Bianchetti
-## Exploring the Future of Artificial Intelligence
+
 <h1 align="center">Bianchetti Federico Master Degree in Artificial Intelligence</h1>
 <h3 align="center">Artificial Intelligence enthusiast</h3>
 
