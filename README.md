@@ -6,9 +6,6 @@
     <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/">
       <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white"/>
     </a>
-    <a href="https://bento.me/fakeblubba">
-      <img src="https://img.shields.io/badge/Portfolio-000000?style=flat&logo=About.me&logoColor=white"/>
-    </a>
     <img src="https://komarev.com/ghpvc/?username=FakeBlubba&style=flat&color=grey"/>
   </p>
 </div>
