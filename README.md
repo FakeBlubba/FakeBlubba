@@ -30,7 +30,7 @@ I build AI-powered backend systems and cloud infrastructure. My focus is on LLM 
 ## Background
 
 - 🎓 M.Sc. Artificial Intelligence & Information Systems — Università degli Studi di Torino
-- 🏢 Clients: A2A, Generali, Volkswagen Financial Services (via Reply Neurons)
+- 🏢 Work for: Reply Neurons
 - 📜 Claude Code 101 & Claude Code in Action — Anthropic (2026)
 
 ---
