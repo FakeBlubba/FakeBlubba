@@ -77,5 +77,4 @@ Backend services       →  FastAPI · document ingestion · entity extraction
 ## Background
 
 - 🎓 M.Sc. AI & Information Systems — Università degli Studi di Torino
-- 🏢 Enterprise clients: A2A · Generali · Volkswagen Financial Services
 - 📜 Claude Code 101 & Claude Code in Action — Anthropic (2026)
