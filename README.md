@@ -12,10 +12,7 @@
 
 ---
 
-I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS — deployed in production for companies like A2A, Generali, and Volkswagen Financial Services.
-
-Currently @ **Reply Neurons**, Turin.
-
+I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS.
 ---
 
 ## What I work on
