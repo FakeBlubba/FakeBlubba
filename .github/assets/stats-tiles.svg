@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="312" height="74" viewBox="0 0 312 74" role="img" aria-label="12 public repos, 6 stars">
+<g transform="translate(0,0)">
+  <rect x="0.5" y="0.5" width="149" height="73" rx="12" fill="#1e1e1e" stroke="#252525"/>
+  <text x="16" y="36" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="26" font-weight="600" fill="#f95a5a">12</text>
+  <text x="16" y="56" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="12" fill="#b3b3b3">public repos</text>
+</g>
+<g transform="translate(162,0)">
+  <rect x="0.5" y="0.5" width="149" height="73" rx="12" fill="#1e1e1e" stroke="#252525"/>
+  <text x="16" y="36" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="26" font-weight="600" fill="#f95a5a">6</text>
+  <text x="16" y="56" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="12" fill="#b3b3b3">stars</text>
+</g>
+</svg>

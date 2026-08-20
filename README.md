@@ -15,11 +15,21 @@ $ whoami
 
 </td>
 </tr>
-</table>
+<tr>
+<td colspan="2">
 
 <img src=".github/assets/chips-identity.svg" alt="AI ENGINEER, TORINO, RAG · LLM"/>
 
+</td>
+</tr>
+<tr>
+<td colspan="2">
+
 <a href="https://github.com/FakeBlubba"><img src=".github/assets/action-github.svg" alt="GitHub"/></a> <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/"><img src=".github/assets/action-linkedin.svg" alt="LinkedIn"/></a>
+
+</td>
+</tr>
+</table>
 <!-- /TN:HEADER -->
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>
@@ -82,8 +92,7 @@ Sentiment analysis on tweets: MongoDB MapReduce vs PostgreSQL performance compar
 
 <!-- TN:STATS -->
 <div align="center">
-  <img height="160" alt="GitHub stats for FakeBlubba" src="https://github-readme-stats.vercel.app/api?username=FakeBlubba&show_icons=true&hide_border=false&count_private=false&bg_color=141414&title_color=f95a5a&text_color=b3b3b3&icon_color=f95a5a&border_color=2e2e2e&border_radius=8"/>
-  <img height="160" alt="Most used languages for FakeBlubba" src="https://github-readme-stats.vercel.app/api/top-langs/?username=FakeBlubba&hide_border=false&layout=compact&bg_color=141414&title_color=f95a5a&text_color=b3b3b3&border_color=2e2e2e&border_radius=8"/>
+  <img src=".github/assets/stats-tiles.svg" alt="GitHub stats for FakeBlubba"/>
 </div>
 <!-- /TN:STATS -->
 

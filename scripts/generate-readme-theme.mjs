@@ -317,20 +317,55 @@ function slug(text) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
-function statsCardUrl(tokens, username) {
-  const bg = hex(tokens, 'color-bg-canvas');
-  const title = hex(tokens, 'color-text-link');
-  const text = hex(tokens, 'color-text-secondary');
-  const border = hex(tokens, 'color-border-default');
-  return `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&hide_border=false&count_private=false&bg_color=${bg}&title_color=${title}&text_color=${text}&icon_color=${title}&border_color=${border}&border_radius=8`;
+// github-readme-stats.vercel.app (previous source for this section) is a free
+// community deployment that goes down without notice — it was returning HTTP
+// 503 DEPLOYMENT_PAUSED when this was checked, breaking both images on the
+// live page. Fetching real numbers directly from the GitHub API and rendering
+// our own card removes that single point of failure entirely.
+async function fetchGitHubStats(username) {
+  const url = `https://api.github.com/users/${username}/repos?per_page=100`;
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`GitHub API request failed: ${res.status} ${res.statusText}`);
+      }
+      const repos = await res.json();
+      const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+      return [
+        { n: repos.length, label: 'public repos' },
+        { n: totalStars, label: 'stars' },
+      ];
+    } catch (err) {
+      lastError = err;
+      console.warn(`Attempt ${attempt} to fetch GitHub stats failed: ${err.message}`);
+    }
+  }
+  throw lastError;
 }
 
-function topLangsUrl(tokens, username) {
-  const bg = hex(tokens, 'color-bg-canvas');
-  const title = hex(tokens, 'color-text-link');
-  const text = hex(tokens, 'color-text-secondary');
-  const border = hex(tokens, 'color-border-default');
-  return `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&hide_border=false&layout=compact&bg_color=${bg}&title_color=${title}&text_color=${text}&border_color=${border}&border_radius=8`;
+function buildStatsTilesSvg(tokens, tiles) {
+  const tileWidth = 150;
+  const tileHeight = 74;
+  const gap = 12;
+  const width = tiles.length * tileWidth + (tiles.length - 1) * gap;
+  const height = tileHeight;
+
+  const boxes = tiles.map((tile, i) => {
+    const x = i * (tileWidth + gap);
+    return `<g transform="translate(${x},0)">
+  <rect x="0.5" y="0.5" width="${tileWidth - 1}" height="${tileHeight - 1}" rx="12" fill="${tokens['color-bg-surface']}" stroke="${tokens['color-border-subtle']}"/>
+  <text x="16" y="36" font-family="${MONO_FONT}" font-size="26" font-weight="600" fill="${tokens['color-text-link']}">${escapeXml(String(tile.n))}</text>
+  <text x="16" y="56" font-family="${SANS_FONT}" font-size="12" fill="${tokens['color-text-secondary']}">${escapeXml(tile.label)}</text>
+</g>`;
+  }).join('\n');
+
+  const ariaLabel = tiles.map((t) => `${t.n} ${t.label}`).join(', ');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
+${boxes}
+</svg>`;
 }
 
 function komarevUrl(tokens, username) {
@@ -342,13 +377,14 @@ function komarevUrl(tokens, username) {
 // own component contracts and IBM Plex fonts — nothing here falls back to
 // GitHub's default markdown theme or a third-party badge service's font. ---
 
-function buildAssets(tokens) {
+function buildAssets(tokens, statsTiles) {
   const files = [
     { path: path.join(ASSETS_DIR, 'divider.svg'), svg: buildDividerSvg(tokens) },
     { path: path.join(ASSETS_DIR, 'section-label-projects.svg'), svg: buildSectionLabelSvg(tokens, '$ ls projects/') },
     { path: path.join(ASSETS_DIR, 'work-rows.svg'), svg: buildWorkRowsSvg(tokens) },
     { path: path.join(ASSETS_DIR, 'alert-bio.svg'), svg: buildAlertSvg(tokens, '$ cat about.md', 'I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS.') },
     { path: path.join(ASSETS_DIR, 'chips-identity.svg'), svg: buildChipRowSvg(tokens, IDENTITY_CHIPS) },
+    { path: path.join(ASSETS_DIR, 'stats-tiles.svg'), svg: buildStatsTilesSvg(tokens, statsTiles) },
   ];
 
   for (const link of SOCIAL_LINKS) {
@@ -368,12 +404,19 @@ function buildAssets(tokens) {
   return files;
 }
 
-// B1 is a table only ("niente altro" per the spec) — B2 (identity chips) and
-// B3 (action buttons) are separate full-width blocks stacked below it, not
-// nested inside B1's text column, matching the wireframe's own block sequence.
-function buildBannerMarkdown() {
-  // <colgroup>/<col> are stripped by GitHub's markdown sanitizer (confirmed
-  // via the markdown API, not assumed) — width goes directly on the <td>.
+// B1 (avatar/name/role), B2 (identity chips) and B3 (action buttons) all live
+// inside ONE <table> as separate rows (chips/actions rows use colspan="2" to
+// span the full width) — three stacked-but-separate blocks read as visually
+// disconnected (border stops after B1, chips/actions float below with no
+// container), whereas one table border ties the whole header together.
+// <colgroup>/<col> are stripped by GitHub's sanitizer (confirmed via the
+// markdown API); colspan is not — verified the same way before relying on it.
+function buildHeaderMarkdown() {
+  const chips = `<img src=".github/assets/chips-identity.svg" alt="${escapeXml(IDENTITY_CHIPS.map((c) => c.label).join(', '))}"/>`;
+  const actions = SOCIAL_LINKS
+    .map((link) => `<a href="${link.url}"><img src=".github/assets/action-${slug(link.label)}.svg" alt="${escapeXml(link.label)}"/></a>`)
+    .join(' ');
+
   return `<table width="100%">
 <tr>
 <td width="140" align="center" valign="top">
@@ -390,21 +433,21 @@ $ whoami
 
 </td>
 </tr>
+<tr>
+<td colspan="2">
+
+${chips}
+
+</td>
+</tr>
+<tr>
+<td colspan="2">
+
+${actions}
+
+</td>
+</tr>
 </table>`;
-}
-
-function buildIdentityRowMarkdown() {
-  return `<img src=".github/assets/chips-identity.svg" alt="${escapeXml(IDENTITY_CHIPS.map((c) => c.label).join(', '))}"/>`;
-}
-
-function buildActionsRowMarkdown() {
-  return SOCIAL_LINKS
-    .map((link) => `<a href="${link.url}"><img src=".github/assets/action-${slug(link.label)}.svg" alt="${escapeXml(link.label)}"/></a>`)
-    .join(' ');
-}
-
-function buildHeaderMarkdown() {
-  return [buildBannerMarkdown(), buildIdentityRowMarkdown(), buildActionsRowMarkdown()].join('\n\n');
 }
 
 function buildTechMarkdown() {
@@ -428,10 +471,9 @@ ${project.what}
 ${cards}`;
 }
 
-function buildStatsMarkdown(tokens) {
+function buildStatsMarkdown() {
   return `<div align="center">
-  <img height="160" alt="GitHub stats for FakeBlubba" src="${statsCardUrl(tokens, 'FakeBlubba')}"/>
-  <img height="160" alt="Most used languages for FakeBlubba" src="${topLangsUrl(tokens, 'FakeBlubba')}"/>
+  <img src=".github/assets/stats-tiles.svg" alt="GitHub stats for FakeBlubba"/>
 </div>`;
 }
 
@@ -464,18 +506,19 @@ function verify(readmeContent, generatedFiles, markerNames) {
   }
 }
 
-function main() {
+async function main() {
   const cssText = readFileSync(TOKENS_CSS_PATH, 'utf8');
   const tokens = parseTokens(cssText);
+  const statsTiles = await fetchGitHubStats('FakeBlubba');
 
-  const generatedFiles = buildAssets(tokens);
+  const generatedFiles = buildAssets(tokens, statsTiles);
 
   const markerNames = ['HEADER', 'TECH', 'PROJECTS', 'STATS'];
   let readme = readFileSync(README_PATH, 'utf8');
   readme = replaceMarkerRegion(readme, 'HEADER', buildHeaderMarkdown());
   readme = replaceMarkerRegion(readme, 'TECH', buildTechMarkdown());
   readme = replaceMarkerRegion(readme, 'PROJECTS', buildProjectsMarkdown());
-  readme = replaceMarkerRegion(readme, 'STATS', buildStatsMarkdown(tokens));
+  readme = replaceMarkerRegion(readme, 'STATS', buildStatsMarkdown());
 
   verify(readme, generatedFiles, markerNames);
 
@@ -488,4 +531,7 @@ function main() {
   console.log('Generated:', generatedFiles.length, 'assets and updated README.md');
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
