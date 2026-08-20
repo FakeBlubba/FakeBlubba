@@ -1,35 +1,7 @@
 <!-- TN:HEADER -->
-<table width="100%">
-<tr>
-<td width="140" align="center" valign="top">
-  <img src=".github/assets/avatar-8bit.png" width="120" height="120" alt="Avatar 8-bit di Federico Bianchetti"/>
-</td>
-<td valign="middle">
-
-```
-$ whoami
-```
-
-# Federico Bianchetti
-**AI Engineer · RAG & LLM Systems · Cloud Infrastructure**
-
-</td>
-</tr>
-<tr>
-<td colspan="2">
-
-<img src=".github/assets/chips-identity.svg" alt="AI ENGINEER, TORINO, RAG · LLM"/>
-
-</td>
-</tr>
-<tr>
-<td colspan="2">
+<img src=".github/assets/header-card.svg" alt="Federico Bianchetti — AI Engineer · RAG & LLM Systems · Cloud Infrastructure" width="820"/>
 
 <a href="https://github.com/FakeBlubba"><img src=".github/assets/action-github.svg" alt="GitHub"/></a> <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/"><img src=".github/assets/action-linkedin.svg" alt="LinkedIn"/></a>
-
-</td>
-</tr>
-</table>
 <!-- /TN:HEADER -->
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>

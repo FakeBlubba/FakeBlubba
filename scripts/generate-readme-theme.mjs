@@ -135,30 +135,37 @@ function chipToneColors(tokens, tone) {
   return { bg: tokens['color-bg-surface-raised'], border: tokens[borderToken], text: tokens['color-text-primary'] };
 }
 
-function buildChipRowSvg(tokens, items) {
+// Returns just the <g> markup for a row of chips starting at (x0, y0), plus
+// where it ended — shared by the standalone chip-row files and by anything
+// (like the header card) that draws chips inline as part of a bigger SVG.
+function chipRowGroup(tokens, items, x0, y0) {
   const fontSize = 12;
   const paddingX = 12;
   const height = 26;
   const gap = 8;
 
-  let x = 0;
+  let x = x0;
   const chips = items.map((item) => {
     const c = chipToneColors(tokens, item.tone);
     const textWidth = monoTextWidth(item.label, fontSize);
     const chipWidth = textWidth + paddingX * 2;
     const chipX = x;
     x += chipWidth + gap;
-    return `<g transform="translate(${chipX},0)">
+    return `<g transform="translate(${chipX},${y0})">
   <rect x="0.5" y="0.5" width="${chipWidth - 1}" height="${height - 1}" rx="${height / 2}" fill="${c.bg}" stroke="${c.border}"/>
   <text x="${chipWidth / 2}" y="${height / 2 + fontSize / 3}" text-anchor="middle" font-family="${MONO_FONT}" font-size="${fontSize}" fill="${c.text}">${escapeXml(item.label)}</text>
 </g>`;
   }).join('\n');
 
-  const width = x - gap;
+  return { markup: chips, endX: x - gap, height };
+}
+
+function buildChipRowSvg(tokens, items) {
+  const { markup, endX, height } = chipRowGroup(tokens, items, 0, 0);
   const ariaLabel = items.map((i) => i.label).join(', ');
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
-${chips}
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${endX}" height="${height}" viewBox="0 0 ${endX} ${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
+${markup}
 </svg>`;
 }
 
@@ -373,6 +380,41 @@ function komarevUrl(tokens, username) {
   return `https://komarev.com/ghpvc/?username=${username}&label=SCORE&style=flat&color=${color}`;
 }
 
+// B1+B2 (avatar, "$ whoami" prompt, name, role, identity chips) as ONE
+// self-contained SVG "card" — terminal-noir has no separate Card contract,
+// so this reuses the bg-surface/border-subtle/radius treatment Alert and
+// DataTable already share. The avatar is embedded as a base64 data URI
+// (not an external <image> reference) so the file needs nothing else to
+// render correctly wherever it's placed — no <table> layout involved.
+// B3 (action buttons) stays outside: a flat image can only carry one link,
+// and GitHub/LinkedIn need to stay two real, separately-clickable anchors.
+function buildHeaderCardSvg(tokens) {
+  const width = 820;
+  const padding = 24;
+  const avatarSize = 96;
+  const textX = padding + avatarSize + 20;
+  const name = 'Federico Bianchetti';
+  const role = 'AI Engineer · RAG & LLM Systems · Cloud Infrastructure';
+
+  const whoamiY = padding + 14;
+  const nameY = whoamiY + 32;
+  const roleY = nameY + 22;
+  const chipsY = Math.max(padding + avatarSize, roleY + 4) + 20;
+
+  const { markup: chipsMarkup, height: chipsHeight } = chipRowGroup(tokens, IDENTITY_CHIPS, padding, chipsY);
+  const height = chipsY + chipsHeight + padding;
+  const avatarBase64 = readFileSync(path.join(ASSETS_DIR, 'avatar-8bit.png')).toString('base64');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(name)} — ${escapeXml(role)}">
+  <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" fill="${tokens['color-bg-surface']}" stroke="${tokens['color-border-subtle']}"/>
+  <image href="data:image/png;base64,${avatarBase64}" x="${padding}" y="${padding}" width="${avatarSize}" height="${avatarSize}"/>
+  <text x="${textX}" y="${whoamiY}" font-family="${MONO_FONT}" font-size="12" fill="${tokens['color-text-tertiary']}"><tspan fill="${tokens['color-text-link']}">$</tspan> whoami</text>
+  <text x="${textX}" y="${nameY}" font-family="${MONO_FONT}" font-size="26" font-weight="600" letter-spacing="-0.01em" fill="${tokens['color-text-primary']}">${escapeXml(name)}</text>
+  <text x="${textX}" y="${roleY}" font-family="${SANS_FONT}" font-size="13" fill="${tokens['color-text-secondary']}">${escapeXml(role)}</text>
+  ${chipsMarkup}
+</svg>`;
+}
+
 // --- Assembly: everything visual is a generated file using terminal-noir's
 // own component contracts and IBM Plex fonts — nothing here falls back to
 // GitHub's default markdown theme or a third-party badge service's font. ---
@@ -383,8 +425,8 @@ function buildAssets(tokens, statsTiles) {
     { path: path.join(ASSETS_DIR, 'section-label-projects.svg'), svg: buildSectionLabelSvg(tokens, '$ ls projects/') },
     { path: path.join(ASSETS_DIR, 'work-rows.svg'), svg: buildWorkRowsSvg(tokens) },
     { path: path.join(ASSETS_DIR, 'alert-bio.svg'), svg: buildAlertSvg(tokens, '$ cat about.md', 'I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS.') },
-    { path: path.join(ASSETS_DIR, 'chips-identity.svg'), svg: buildChipRowSvg(tokens, IDENTITY_CHIPS) },
     { path: path.join(ASSETS_DIR, 'stats-tiles.svg'), svg: buildStatsTilesSvg(tokens, statsTiles) },
+    { path: path.join(ASSETS_DIR, 'header-card.svg'), svg: buildHeaderCardSvg(tokens) },
   ];
 
   for (const link of SOCIAL_LINKS) {
@@ -404,50 +446,14 @@ function buildAssets(tokens, statsTiles) {
   return files;
 }
 
-// B1 (avatar/name/role), B2 (identity chips) and B3 (action buttons) all live
-// inside ONE <table> as separate rows (chips/actions rows use colspan="2" to
-// span the full width) — three stacked-but-separate blocks read as visually
-// disconnected (border stops after B1, chips/actions float below with no
-// container), whereas one table border ties the whole header together.
-// <colgroup>/<col> are stripped by GitHub's sanitizer (confirmed via the
-// markdown API); colspan is not — verified the same way before relying on it.
 function buildHeaderMarkdown() {
-  const chips = `<img src=".github/assets/chips-identity.svg" alt="${escapeXml(IDENTITY_CHIPS.map((c) => c.label).join(', '))}"/>`;
   const actions = SOCIAL_LINKS
     .map((link) => `<a href="${link.url}"><img src=".github/assets/action-${slug(link.label)}.svg" alt="${escapeXml(link.label)}"/></a>`)
     .join(' ');
 
-  return `<table width="100%">
-<tr>
-<td width="140" align="center" valign="top">
-  <img src=".github/assets/avatar-8bit.png" width="120" height="120" alt="Avatar 8-bit di Federico Bianchetti"/>
-</td>
-<td valign="middle">
+  return `<img src=".github/assets/header-card.svg" alt="Federico Bianchetti — AI Engineer · RAG & LLM Systems · Cloud Infrastructure" width="820"/>
 
-\`\`\`
-$ whoami
-\`\`\`
-
-# Federico Bianchetti
-**AI Engineer · RAG & LLM Systems · Cloud Infrastructure**
-
-</td>
-</tr>
-<tr>
-<td colspan="2">
-
-${chips}
-
-</td>
-</tr>
-<tr>
-<td colspan="2">
-
-${actions}
-
-</td>
-</tr>
-</table>`;
+${actions}`;
 }
 
 function buildTechMarkdown() {
