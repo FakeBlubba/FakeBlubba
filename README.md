@@ -1,19 +1,17 @@
-<!-- Header -->
 <!-- TN:HEADER -->
-<div align="center">
-  <img src=".github/assets/banner.svg" alt="Federico Bianchetti — AI Engineer · RAG & LLM Systems · Cloud Infrastructure" width="820"/>
-  <p>
-    <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/">
-      <img src="https://img.shields.io/badge/LinkedIn-252525?style=flat-square&logo=linkedin&logoColor=f0f0f0"/>
-    </a>
-    <img src="https://komarev.com/ghpvc/?username=FakeBlubba&style=flat&color=8a0000"/>
-  </p>
-</div>
+<h1 align="center">Federico Bianchetti</h1>
+<p align="center"><code>AI Engineer &nbsp;·&nbsp; RAG &amp; LLM Systems &nbsp;·&nbsp; Cloud Infrastructure</code></p>
+<p align="center">
+  <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-252525?style=flat-square&logo=linkedin&logoColor=f0f0f0"/></a>
+  <a href="https://github.com/FakeBlubba"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-252525?style=flat-square&logo=github&logoColor=f0f0f0"/></a>
+  <img alt="Profile views" src="https://komarev.com/ghpvc/?username=FakeBlubba&style=flat&color=8a0000"/>
+</p>
 <!-- /TN:HEADER -->
 
 ---
 
 I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS.
+
 ---
 
 ## What I work on
@@ -53,15 +51,15 @@ I build AI-powered backend systems for enterprise clients. My day-to-day is RAG 
 
 ## Featured projects
 
-<!-- TN:PROJECTS_LABEL -->
+<!-- TN:PROJECTS -->
 <img src=".github/assets/section-label-projects.svg" alt="$ ls projects/"/>
-<!-- /TN:PROJECTS_LABEL -->
 
-| Repo | What it does |
-|---|---|
-| [**FrameDeployer**](https://github.com/FakeBlubba/FrameDeployer) | Automated video generation from trending topics: NLP summarization, sentiment analysis, TTS, subtitle sync |
-| [**depression-pre-diagnose-model**](https://github.com/FakeBlubba/depression-pre-diagnose-model) | BERT-based NLP classifier for depression symptom detection from text and audio |
-| [**MAADB**](https://github.com/FakeBlubba/MAADB) | Sentiment analysis on tweets: MongoDB MapReduce vs PostgreSQL performance comparison |
+| Repo | What it does | Stack |
+|---|---|---|
+| [**FrameDeployer**](https://github.com/FakeBlubba/FrameDeployer) | Automated video generation from trending topics: NLP summarization, sentiment analysis, TTS, subtitle sync | ![Python](https://img.shields.io/badge/Python-008cb0?style=flat-square) ![NLP](https://img.shields.io/badge/NLP-00a855?style=flat-square) |
+| [**depression-pre-diagnose-model**](https://github.com/FakeBlubba/depression-pre-diagnose-model) | BERT-based NLP classifier for depression symptom detection from text and audio | ![BERT](https://img.shields.io/badge/BERT-d99700?style=flat-square) ![Research](https://img.shields.io/badge/Research-252525?style=flat-square) |
+| [**MAADB**](https://github.com/FakeBlubba/MAADB) | Sentiment analysis on tweets: MongoDB MapReduce vs PostgreSQL performance comparison | ![MongoDB](https://img.shields.io/badge/MongoDB-00a855?style=flat-square) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-008cb0?style=flat-square) |
+<!-- /TN:PROJECTS -->
 
 ---
 

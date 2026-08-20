@@ -51,68 +51,36 @@ function hex(tokens, name) {
   return tokens[name].replace('#', '');
 }
 
+// Icon path data copied from @fakeblubba/terminal-noir/assets/icons.svg
+// (symbols icon-data-pipeline, icon-status-sparkle, icon-data-cloud, icon-data-server).
+const ICON_DATA_PIPELINE = '<circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/><path d="M7.2 12h2.6M14.2 12h2.6"/>';
+const ICON_STATUS_SPARKLE = '<path d="M11 4l1.7 4.6L17 10l-4.3 1.4L11 16l-1.7-4.6L5 10l4.3-1.4zM18.5 15l.7 1.9 1.8.6-1.8.6-.7 1.9-.7-1.9-1.8-.6 1.8-.6z"/>';
+const ICON_DATA_CLOUD = '<path d="M7 18a4.5 4.5 0 0 1 .4-9 6 6 0 0 1 11.3 2 3.8 3.8 0 0 1-.7 7z"/>';
+const ICON_DATA_SERVER = '<path d="M4 4h16v6H4zM4 14h16v6H4z"/><circle cx="7.5" cy="7" r="1.1" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="1.1" fill="currentColor" stroke="none"/>';
+
 const WORK_ITEMS = [
-  { label: 'RAG pipelines', detail: 'embedding indexing, vector stores, retrieval orchestration' },
-  { label: 'LLM agents', detail: 'multi-agent systems, tool use, monitoring agents' },
-  { label: 'Cloud infra', detail: 'AWS Lambda · DynamoDB · Bedrock · Terraform · Packer' },
-  { label: 'Backend services', detail: 'FastAPI · document ingestion · entity extraction' },
+  { label: 'RAG pipelines', detail: 'embedding indexing, vector stores, retrieval orchestration', icon: ICON_DATA_PIPELINE },
+  { label: 'LLM agents', detail: 'multi-agent systems, tool use, monitoring agents', icon: ICON_STATUS_SPARKLE },
+  { label: 'Cloud infra', detail: 'AWS Lambda · DynamoDB · Bedrock · Terraform · Packer', icon: ICON_DATA_CLOUD },
+  { label: 'Backend services', detail: 'FastAPI · document ingestion · entity extraction', icon: ICON_DATA_SERVER },
 ];
 
 const MONO_FONT = "'IBM Plex Mono', ui-monospace, monospace";
 const SANS_FONT = "'IBM Plex Sans', system-ui, sans-serif";
 
-// Icon path data copied from @fakeblubba/terminal-noir/assets/icons.svg
-// (symbols icon-sys-globe, icon-nav-external-link) — inlined so the banner
-// stays a single self-contained file with no external asset reference.
-const ICON_GLOBE = '<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.6 3.2 2.6 12.8 0 16M12 4c-2.6 3.2-2.6 12.8 0 16"/>';
-const ICON_EXTERNAL_LINK = '<path d="M14 4h6v6M20 4l-8 8M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/>';
-
 function buildIcon(pathMarkup, x, y, size, color) {
-  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${pathMarkup}</svg>`;
-}
-
-const CONTACT_ROWS = [
-  { icon: ICON_GLOBE, label: 'github.com/FakeBlubba' },
-  { icon: ICON_EXTERNAL_LINK, label: 'linkedin.com/in/federico-bianchetti-6b5464204' },
-];
-
-function buildBannerSvg(tokens) {
-  const width = 820;
-  const height = 196;
-  const accentWidth = 6;
-  const contentX = accentWidth + 24;
-  const name = 'Federico Bianchetti';
-  const role = 'AI Engineer · RAG & LLM Systems · Cloud Infrastructure';
-
-  const contactRows = CONTACT_ROWS.map((row, index) => {
-    const rowY = 148 + index * 24;
-    return `${buildIcon(row.icon, contentX, rowY - 13, 16, tokens['color-text-secondary'])}
-  <text x="${contentX + 24}" y="${rowY}" font-family="${MONO_FONT}" font-size="13" fill="${tokens['color-text-secondary']}">${escapeXml(row.label)}</text>`;
-  }).join('\n');
-
-  const ariaLabel = `${name} — ${role} — ${CONTACT_ROWS.map((r) => r.label).join(', ')}`;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
-  <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" fill="${tokens['color-bg-canvas']}" stroke="${tokens['color-border-default']}"/>
-  <rect x="0" y="12" width="${accentWidth}" height="${height - 24}" fill="${tokens['color-border-accent']}"/>
-  <circle cx="${contentX + 4}" cy="28" r="6" fill="${tokens['color-feedback-danger']}"/>
-  <circle cx="${contentX + 24}" cy="28" r="6" fill="${tokens['color-feedback-warning']}"/>
-  <circle cx="${contentX + 44}" cy="28" r="6" fill="${tokens['color-feedback-success']}"/>
-  <text x="${contentX}" y="72" font-family="${MONO_FONT}" font-size="32" font-weight="600" letter-spacing="-0.015em" fill="${tokens['color-text-primary']}">${escapeXml(name)}</text>
-  <text x="${contentX}" y="98" font-family="${SANS_FONT}" font-size="15" fill="${tokens['color-text-secondary']}">${escapeXml(role)}</text>
-  <line x1="${contentX}" y1="118" x2="${width - 24}" y2="118" stroke="${tokens['color-border-subtle']}" stroke-width="1"/>
-  ${contactRows}
-</svg>`;
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" color="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${pathMarkup}</svg>`;
 }
 
 function buildWorkRowsSvg(tokens) {
   const width = 820;
-  const rowHeight = 44;
-  const topPadding = 20;
-  const bottomPadding = 20;
+  const rowHeight = 46;
+  const topPadding = 18;
+  const bottomPadding = 18;
   const height = topPadding + WORK_ITEMS.length * rowHeight + bottomPadding;
-  const labelX = 24;
-  const detailX = 240;
+  const iconX = 24;
+  const labelX = 56;
+  const detailX = 264;
 
   const rows = WORK_ITEMS.map((item, index) => {
     const rowTop = topPadding + index * rowHeight;
@@ -121,6 +89,7 @@ function buildWorkRowsSvg(tokens) {
       ? `<line x1="24" y1="${rowTop}" x2="${width - 24}" y2="${rowTop}" stroke="${tokens['color-border-subtle']}" stroke-width="1"/>`
       : '';
     return `${divider}
+  ${buildIcon(item.icon, iconX, textY - 14, 18, tokens['color-text-link'])}
   <text x="${labelX}" y="${textY}" font-family="${MONO_FONT}" font-size="13" font-weight="500" letter-spacing="0.06em" fill="${tokens['color-text-link']}">${escapeXml(item.label)}</text>
   <text x="${detailX}" y="${textY}" font-family="${SANS_FONT}" font-size="13" fill="${tokens['color-text-secondary']}">${escapeXml(item.detail)}</text>`;
   }).join('\n');
@@ -160,6 +129,42 @@ const TECH_ITEMS = [
   { group: 'Databases', label: 'DynamoDB', logo: 'amazon-dynamodb' },
 ];
 
+// Maps the data-table contract's `tone` enum onto terminal-noir feedback tokens,
+// so a tag's colour carries the same meaning it would inside the real component.
+const TONE_TOKEN = {
+  neutral: 'color-bg-surface-raised',
+  success: 'color-feedback-success',
+  warning: 'color-feedback-warning',
+  danger: 'color-feedback-danger',
+  info: 'color-feedback-info',
+};
+
+const PROJECTS = [
+  {
+    name: 'FrameDeployer',
+    url: 'https://github.com/FakeBlubba/FrameDeployer',
+    what: 'Automated video generation from trending topics: NLP summarization, sentiment analysis, TTS, subtitle sync',
+    tags: [{ label: 'Python', tone: 'info' }, { label: 'NLP', tone: 'success' }],
+  },
+  {
+    name: 'depression-pre-diagnose-model',
+    url: 'https://github.com/FakeBlubba/depression-pre-diagnose-model',
+    what: 'BERT-based NLP classifier for depression symptom detection from text and audio',
+    tags: [{ label: 'BERT', tone: 'warning' }, { label: 'Research', tone: 'neutral' }],
+  },
+  {
+    name: 'MAADB',
+    url: 'https://github.com/FakeBlubba/MAADB',
+    what: 'Sentiment analysis on tweets: MongoDB MapReduce vs PostgreSQL performance comparison',
+    tags: [{ label: 'MongoDB', tone: 'success' }, { label: 'PostgreSQL', tone: 'info' }],
+  },
+];
+
+const SOCIAL_LINKS = [
+  { label: 'LinkedIn', logo: 'linkedin', url: 'https://www.linkedin.com/in/federico-bianchetti-6b5464204/' },
+  { label: 'GitHub', logo: 'github', url: 'https://github.com/FakeBlubba' },
+];
+
 function shieldsLabelEncode(label) {
   return encodeURIComponent(label.replace(/-/g, '--'));
 }
@@ -168,6 +173,11 @@ function shieldsBadgeUrl(tokens, label, logo) {
   const bg = hex(tokens, 'color-bg-surface-raised');
   const logoColor = hex(tokens, 'color-text-primary');
   return `https://img.shields.io/badge/${shieldsLabelEncode(label)}-${bg}?style=flat-square&logo=${logo}&logoColor=${logoColor}`;
+}
+
+function toneTagUrl(tokens, label, tone) {
+  const color = hex(tokens, TONE_TOKEN[tone]);
+  return `https://img.shields.io/badge/${shieldsLabelEncode(label)}-${color}?style=flat-square`;
 }
 
 function statsCardUrl(tokens, username) {
@@ -192,15 +202,16 @@ function komarevUrl(tokens, username) {
 }
 
 function buildHeaderMarkdown(tokens) {
-  return `<div align="center">
-  <img src=".github/assets/banner.svg" alt="Federico Bianchetti — AI Engineer · RAG & LLM Systems · Cloud Infrastructure" width="820"/>
-  <p>
-    <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/">
-      <img src="${shieldsBadgeUrl(tokens, 'LinkedIn', 'linkedin')}"/>
-    </a>
-    <img src="${komarevUrl(tokens, 'FakeBlubba')}"/>
-  </p>
-</div>`;
+  const links = SOCIAL_LINKS
+    .map((link) => `  <a href="${link.url}"><img alt="${escapeXml(link.label)}" src="${shieldsBadgeUrl(tokens, link.label, link.logo)}"/></a>`)
+    .join('\n');
+
+  return `<h1 align="center">Federico Bianchetti</h1>
+<p align="center"><code>AI Engineer &nbsp;·&nbsp; RAG &amp; LLM Systems &nbsp;·&nbsp; Cloud Infrastructure</code></p>
+<p align="center">
+${links}
+  <img alt="Profile views" src="${komarevUrl(tokens, 'FakeBlubba')}"/>
+</p>`;
 }
 
 function buildWorkMarkdown() {
@@ -221,8 +232,19 @@ function buildTechMarkdown(tokens) {
     .join('\n\n');
 }
 
-function buildProjectsLabelMarkdown() {
-  return '<img src=".github/assets/section-label-projects.svg" alt="$ ls projects/"/>';
+function buildProjectsMarkdown(tokens) {
+  const rows = PROJECTS.map((project) => {
+    const tags = project.tags
+      .map((tag) => `![${tag.label}](${toneTagUrl(tokens, tag.label, tag.tone)})`)
+      .join(' ');
+    return `| [**${project.name}**](${project.url}) | ${project.what} | ${tags} |`;
+  }).join('\n');
+
+  return `<img src=".github/assets/section-label-projects.svg" alt="$ ls projects/"/>
+
+| Repo | What it does | Stack |
+|---|---|---|
+${rows}`;
 }
 
 function buildStatsMarkdown(tokens) {
@@ -266,17 +288,16 @@ function main() {
   const tokens = parseTokens(cssText);
 
   const generatedFiles = [
-    { path: path.join(ASSETS_DIR, 'banner.svg'), svg: buildBannerSvg(tokens) },
     { path: path.join(ASSETS_DIR, 'work-rows.svg'), svg: buildWorkRowsSvg(tokens) },
     { path: path.join(ASSETS_DIR, 'section-label-projects.svg'), svg: buildSectionLabelSvg(tokens, '$ ls projects/') },
   ];
 
-  const markerNames = ['HEADER', 'WORK', 'TECH', 'PROJECTS_LABEL', 'STATS'];
+  const markerNames = ['HEADER', 'WORK', 'TECH', 'PROJECTS', 'STATS'];
   let readme = readFileSync(README_PATH, 'utf8');
   readme = replaceMarkerRegion(readme, 'HEADER', buildHeaderMarkdown(tokens));
   readme = replaceMarkerRegion(readme, 'WORK', buildWorkMarkdown());
   readme = replaceMarkerRegion(readme, 'TECH', buildTechMarkdown(tokens));
-  readme = replaceMarkerRegion(readme, 'PROJECTS_LABEL', buildProjectsLabelMarkdown());
+  readme = replaceMarkerRegion(readme, 'PROJECTS', buildProjectsMarkdown(tokens));
   readme = replaceMarkerRegion(readme, 'STATS', buildStatsMarkdown(tokens));
 
   verify(readme, generatedFiles, markerNames);
