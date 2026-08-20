@@ -1,14 +1,15 @@
 <!-- Header -->
+<!-- TN:HEADER -->
 <div align="center">
-  <h1>Federico Bianchetti</h1>
-  <p><strong>AI Engineer · RAG & LLM Systems · Cloud Infrastructure</strong></p>
+  <img src=".github/assets/banner.svg" alt="Federico Bianchetti — AI Engineer · RAG & LLM Systems · Cloud Infrastructure" width="820"/>
   <p>
     <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/">
-      <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white"/>
+      <img src="https://img.shields.io/badge/LinkedIn-252525?style=flat-square&logo=linkedin&logoColor=f0f0f0"/>
     </a>
-    <img src="https://komarev.com/ghpvc/?username=FakeBlubba&style=flat&color=grey"/>
+    <img src="https://komarev.com/ghpvc/?username=FakeBlubba&style=flat&color=8a0000"/>
   </p>
 </div>
+<!-- /TN:HEADER -->
 
 ---
 
@@ -17,39 +18,44 @@ I build AI-powered backend systems for enterprise clients. My day-to-day is RAG 
 
 ## What I work on
 
-```
-RAG pipelines          →  embedding indexing, vector stores, retrieval orchestration
-LLM agents             →  multi-agent systems, tool use, monitoring agents
-Cloud infra            →  AWS Lambda · DynamoDB · Bedrock · Terraform · Packer
-Backend services       →  FastAPI · document ingestion · entity extraction
-```
+<!-- TN:WORK -->
+<div align="center">
+  <img src=".github/assets/work-rows.svg" alt="What I work on: RAG pipelines, LLM agents, Cloud infra, Backend services" width="820"/>
+</div>
+<!-- /TN:WORK -->
 
 ---
 
 ## Tech
 
+<!-- TN:TECH -->
 **AI/ML**
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat&logo=tensorflow&logoColor=white)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat&logo=scikit-learn&logoColor=white)
+![Python](https://img.shields.io/badge/Python-252525?style=flat-square&logo=python&logoColor=f0f0f0)
+![FastAPI](https://img.shields.io/badge/FastAPI-252525?style=flat-square&logo=fastapi&logoColor=f0f0f0)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-252525?style=flat-square&logo=tensorflow&logoColor=f0f0f0)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-252525?style=flat-square&logo=scikit-learn&logoColor=f0f0f0)
 
 **Cloud & Infra**
 
-![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazon-aws&logoColor=white)
-![Terraform](https://img.shields.io/badge/Terraform-623CE4?style=flat&logo=terraform&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-252525?style=flat-square&logo=amazon-aws&logoColor=f0f0f0)
+![Terraform](https://img.shields.io/badge/Terraform-252525?style=flat-square&logo=terraform&logoColor=f0f0f0)
+![Docker](https://img.shields.io/badge/Docker-252525?style=flat-square&logo=docker&logoColor=f0f0f0)
 
 **Databases**
 
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=flat&logo=mongodb&logoColor=white)
-![DynamoDB](https://img.shields.io/badge/DynamoDB-4053D6?style=flat&logo=amazon-dynamodb&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-252525?style=flat-square&logo=postgresql&logoColor=f0f0f0)
+![MongoDB](https://img.shields.io/badge/MongoDB-252525?style=flat-square&logo=mongodb&logoColor=f0f0f0)
+![DynamoDB](https://img.shields.io/badge/DynamoDB-252525?style=flat-square&logo=amazon-dynamodb&logoColor=f0f0f0)
+<!-- /TN:TECH -->
 
 ---
 
 ## Featured projects
+
+<!-- TN:PROJECTS_LABEL -->
+<img src=".github/assets/section-label-projects.svg" alt="$ ls projects/"/>
+<!-- /TN:PROJECTS_LABEL -->
 
 | Repo | What it does |
 |---|---|
@@ -61,10 +67,12 @@ Backend services       →  FastAPI · document ingestion · entity extraction
 
 ## Stats
 
+<!-- TN:STATS -->
 <div align="center">
-  <img height="160" src="https://github-readme-stats.vercel.app/api?username=FakeBlubba&show_icons=true&theme=dark&hide_border=true&count_private=false"/>
-  <img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=FakeBlubba&theme=dark&hide_border=true&layout=compact"/>
+  <img height="160" src="https://github-readme-stats.vercel.app/api?username=FakeBlubba&show_icons=true&hide_border=false&count_private=false&bg_color=141414&title_color=f95a5a&text_color=b3b3b3&icon_color=f95a5a&border_color=2e2e2e&border_radius=8"/>
+  <img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=FakeBlubba&hide_border=false&layout=compact&bg_color=141414&title_color=f95a5a&text_color=b3b3b3&border_color=2e2e2e&border_radius=8"/>
 </div>
+<!-- /TN:STATS -->
 
 ---
 

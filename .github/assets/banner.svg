@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="170" viewBox="0 0 820 170" role="img" aria-label="Federico Bianchetti — AI Engineer · RAG &amp; LLM Systems · Cloud Infrastructure">
+  <rect x="0.5" y="0.5" width="819" height="169" rx="12" fill="#141414" stroke="#2e2e2e"/>
+  <circle cx="28" cy="28" r="6" fill="#c81414"/>
+  <circle cx="48" cy="28" r="6" fill="#d99700"/>
+  <circle cx="68" cy="28" r="6" fill="#00a855"/>
+  <text x="410" y="88" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="42" font-weight="600" letter-spacing="-0.015em" fill="#f0f0f0">Federico Bianchetti</text>
+  <text x="410" y="120" text-anchor="middle" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="16" fill="#b3b3b3">AI Engineer · RAG &amp; LLM Systems · Cloud Infrastructure</text>
+</svg>

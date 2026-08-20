@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="216" viewBox="0 0 820 216" role="img" aria-label="What I work on: RAG pipelines, LLM agents, Cloud infra, Backend services">
+  <rect x="0.5" y="0.5" width="819" height="215" rx="8" fill="#1e1e1e" stroke="#252525"/>
+  
+  <text x="24" y="47" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#f95a5a">RAG pipelines</text>
+  <text x="240" y="47" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="13" fill="#b3b3b3">embedding indexing, vector stores, retrieval orchestration</text>
+<line x1="24" y1="64" x2="796" y2="64" stroke="#252525" stroke-width="1"/>
+  <text x="24" y="91" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#f95a5a">LLM agents</text>
+  <text x="240" y="91" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="13" fill="#b3b3b3">multi-agent systems, tool use, monitoring agents</text>
+<line x1="24" y1="108" x2="796" y2="108" stroke="#252525" stroke-width="1"/>
+  <text x="24" y="135" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#f95a5a">Cloud infra</text>
+  <text x="240" y="135" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="13" fill="#b3b3b3">AWS Lambda · DynamoDB · Bedrock · Terraform · Packer</text>
+<line x1="24" y1="152" x2="796" y2="152" stroke="#252525" stroke-width="1"/>
+  <text x="24" y="179" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#f95a5a">Backend services</text>
+  <text x="240" y="179" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="13" fill="#b3b3b3">FastAPI · document ingestion · entity extraction</text>
+</svg>
