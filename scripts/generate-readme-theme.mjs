@@ -61,19 +61,47 @@ const WORK_ITEMS = [
 const MONO_FONT = "'IBM Plex Mono', ui-monospace, monospace";
 const SANS_FONT = "'IBM Plex Sans', system-ui, sans-serif";
 
+// Icon path data copied from @fakeblubba/terminal-noir/assets/icons.svg
+// (symbols icon-sys-globe, icon-nav-external-link) — inlined so the banner
+// stays a single self-contained file with no external asset reference.
+const ICON_GLOBE = '<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.6 3.2 2.6 12.8 0 16M12 4c-2.6 3.2-2.6 12.8 0 16"/>';
+const ICON_EXTERNAL_LINK = '<path d="M14 4h6v6M20 4l-8 8M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/>';
+
+function buildIcon(pathMarkup, x, y, size, color) {
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${pathMarkup}</svg>`;
+}
+
+const CONTACT_ROWS = [
+  { icon: ICON_GLOBE, label: 'github.com/FakeBlubba' },
+  { icon: ICON_EXTERNAL_LINK, label: 'linkedin.com/in/federico-bianchetti-6b5464204' },
+];
+
 function buildBannerSvg(tokens) {
   const width = 820;
-  const height = 170;
+  const height = 196;
+  const accentWidth = 6;
+  const contentX = accentWidth + 24;
   const name = 'Federico Bianchetti';
   const role = 'AI Engineer · RAG & LLM Systems · Cloud Infrastructure';
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(name)} — ${escapeXml(role)}">
+  const contactRows = CONTACT_ROWS.map((row, index) => {
+    const rowY = 148 + index * 24;
+    return `${buildIcon(row.icon, contentX, rowY - 13, 16, tokens['color-text-secondary'])}
+  <text x="${contentX + 24}" y="${rowY}" font-family="${MONO_FONT}" font-size="13" fill="${tokens['color-text-secondary']}">${escapeXml(row.label)}</text>`;
+  }).join('\n');
+
+  const ariaLabel = `${name} — ${role} — ${CONTACT_ROWS.map((r) => r.label).join(', ')}`;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
   <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" fill="${tokens['color-bg-canvas']}" stroke="${tokens['color-border-default']}"/>
-  <circle cx="28" cy="28" r="6" fill="${tokens['color-feedback-danger']}"/>
-  <circle cx="48" cy="28" r="6" fill="${tokens['color-feedback-warning']}"/>
-  <circle cx="68" cy="28" r="6" fill="${tokens['color-feedback-success']}"/>
-  <text x="${width / 2}" y="88" text-anchor="middle" font-family="${MONO_FONT}" font-size="42" font-weight="600" letter-spacing="-0.015em" fill="${tokens['color-text-primary']}">${escapeXml(name)}</text>
-  <text x="${width / 2}" y="120" text-anchor="middle" font-family="${SANS_FONT}" font-size="16" fill="${tokens['color-text-secondary']}">${escapeXml(role)}</text>
+  <rect x="0" y="12" width="${accentWidth}" height="${height - 24}" fill="${tokens['color-border-accent']}"/>
+  <circle cx="${contentX + 4}" cy="28" r="6" fill="${tokens['color-feedback-danger']}"/>
+  <circle cx="${contentX + 24}" cy="28" r="6" fill="${tokens['color-feedback-warning']}"/>
+  <circle cx="${contentX + 44}" cy="28" r="6" fill="${tokens['color-feedback-success']}"/>
+  <text x="${contentX}" y="72" font-family="${MONO_FONT}" font-size="32" font-weight="600" letter-spacing="-0.015em" fill="${tokens['color-text-primary']}">${escapeXml(name)}</text>
+  <text x="${contentX}" y="98" font-family="${SANS_FONT}" font-size="15" fill="${tokens['color-text-secondary']}">${escapeXml(role)}</text>
+  <line x1="${contentX}" y1="118" x2="${width - 24}" y2="118" stroke="${tokens['color-border-subtle']}" stroke-width="1"/>
+  ${contactRows}
 </svg>`;
 }
 

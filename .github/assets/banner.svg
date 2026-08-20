@@ -1,8 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="820" height="170" viewBox="0 0 820 170" role="img" aria-label="Federico Bianchetti — AI Engineer · RAG &amp; LLM Systems · Cloud Infrastructure">
-  <rect x="0.5" y="0.5" width="819" height="169" rx="12" fill="#141414" stroke="#2e2e2e"/>
-  <circle cx="28" cy="28" r="6" fill="#c81414"/>
-  <circle cx="48" cy="28" r="6" fill="#d99700"/>
-  <circle cx="68" cy="28" r="6" fill="#00a855"/>
-  <text x="410" y="88" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="42" font-weight="600" letter-spacing="-0.015em" fill="#f0f0f0">Federico Bianchetti</text>
-  <text x="410" y="120" text-anchor="middle" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="16" fill="#b3b3b3">AI Engineer · RAG &amp; LLM Systems · Cloud Infrastructure</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="196" viewBox="0 0 820 196" role="img" aria-label="Federico Bianchetti — AI Engineer · RAG &amp; LLM Systems · Cloud Infrastructure — github.com/FakeBlubba, linkedin.com/in/federico-bianchetti-6b5464204">
+  <rect x="0.5" y="0.5" width="819" height="195" rx="12" fill="#141414" stroke="#2e2e2e"/>
+  <rect x="0" y="12" width="6" height="172" fill="#c81414"/>
+  <circle cx="34" cy="28" r="6" fill="#c81414"/>
+  <circle cx="54" cy="28" r="6" fill="#d99700"/>
+  <circle cx="74" cy="28" r="6" fill="#00a855"/>
+  <text x="30" y="72" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="32" font-weight="600" letter-spacing="-0.015em" fill="#f0f0f0">Federico Bianchetti</text>
+  <text x="30" y="98" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="15" fill="#b3b3b3">AI Engineer · RAG &amp; LLM Systems · Cloud Infrastructure</text>
+  <line x1="30" y1="118" x2="796" y2="118" stroke="#252525" stroke-width="1"/>
+  <svg x="30" y="135" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b3b3b3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.6 3.2 2.6 12.8 0 16M12 4c-2.6 3.2-2.6 12.8 0 16"/></svg>
+  <text x="54" y="148" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#b3b3b3">github.com/FakeBlubba</text>
+<svg x="30" y="159" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b3b3b3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8 8M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>
+  <text x="54" y="172" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#b3b3b3">linkedin.com/in/federico-bianchetti-6b5464204</text>
 </svg>
