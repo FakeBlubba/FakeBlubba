@@ -3,6 +3,8 @@ name: Refresh Terminal Noir README theme
 on:
   workflow_dispatch: {}
   push:
+    branches:
+      - main
     paths:
       - package-lock.json
 
