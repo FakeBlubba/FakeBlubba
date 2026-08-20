@@ -1,0 +1,15 @@
+{
+  "name": "fakeblubba",
+  "version": "1.0.1",
+  "description": "<!-- Header -->\r <div align=\"center\">\r   <h1>Federico Bianchetti</h1>\r   <p><strong>AI Engineer · RAG & LLM Systems · Cloud Infrastructure</strong></p>\r   <p>\r     <a href=\"https://www.linkedin.com/in/federico-bianchetti-6b5464204/\">\r       <img src=\"https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white\"/>\r     </a>\r     <img src=\"https://komarev.com/ghpvc/?username=FakeBlubba&style=flat&color=grey\"/>\r   </p>\r </div>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "FakeBlubba",
+  "license": "ISC",
+  "dependencies": {
+    "@fakeblubba/terminal-noir": "^0.1.0"
+  }
+}
