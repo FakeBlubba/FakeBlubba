@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="122" height="26" viewBox="0 0 122 26" role="img" aria-label="Python, NLP">
+<g transform="translate(0,0)">
+  <rect x="0.5" y="0.5" width="67" height="25" rx="13" fill="#252525" stroke="#008cb0"/>
+  <text x="34" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">Python</text>
+</g>
+<g transform="translate(76,0)">
+  <rect x="0.5" y="0.5" width="45" height="25" rx="13" fill="#252525" stroke="#00a855"/>
+  <text x="23" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">NLP</text>
+</g>
+</svg>

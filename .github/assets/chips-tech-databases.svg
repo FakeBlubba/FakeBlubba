@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="269" height="26" viewBox="0 0 269 26" role="img" aria-label="PostgreSQL, MongoDB, DynamoDB">
+<g transform="translate(0,0)">
+  <rect x="0.5" y="0.5" width="95" height="25" rx="13" fill="#252525" stroke="#777777"/>
+  <text x="48" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">PostgreSQL</text>
+</g>
+<g transform="translate(104,0)">
+  <rect x="0.5" y="0.5" width="74" height="25" rx="13" fill="#252525" stroke="#777777"/>
+  <text x="37.5" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">MongoDB</text>
+</g>
+<g transform="translate(187,0)">
+  <rect x="0.5" y="0.5" width="81" height="25" rx="13" fill="#252525" stroke="#777777"/>
+  <text x="41" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">DynamoDB</text>
+</g>
+</svg>

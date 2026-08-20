@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="219" height="26" viewBox="0 0 219 26" role="img" aria-label="AWS, Terraform, Docker">
+<g transform="translate(0,0)">
+  <rect x="0.5" y="0.5" width="45" height="25" rx="13" fill="#252525" stroke="#777777"/>
+  <text x="23" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">AWS</text>
+</g>
+<g transform="translate(54,0)">
+  <rect x="0.5" y="0.5" width="88" height="25" rx="13" fill="#252525" stroke="#777777"/>
+  <text x="44.5" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">Terraform</text>
+</g>
+<g transform="translate(151,0)">
+  <rect x="0.5" y="0.5" width="67" height="25" rx="13" fill="#252525" stroke="#777777"/>
+  <text x="34" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">Docker</text>
+</g>
+</svg>

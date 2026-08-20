@@ -13,9 +13,9 @@ $ whoami
 # Federico Bianchetti
 **AI Engineer · RAG & LLM Systems · Cloud Infrastructure**
 
-<img alt="AI ENGINEER" src="https://img.shields.io/badge/AI%20ENGINEER-8a0000?style=flat-square"/> <img alt="TORINO" src="https://img.shields.io/badge/TORINO-8a0000?style=flat-square"/> <img alt="RAG · LLM" src="https://img.shields.io/badge/RAG%20%C2%B7%20LLM-8a0000?style=flat-square"/>
+<img src=".github/assets/chips-identity.svg" alt="AI ENGINEER, TORINO, RAG · LLM"/>
 
-<a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-252525?style=flat-square&logo=linkedin&logoColor=f0f0f0"/></a> <a href="https://github.com/FakeBlubba"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-252525?style=flat-square&logo=github&logoColor=f0f0f0"/></a> <img alt="Profile views" src="https://komarev.com/ghpvc/?username=FakeBlubba&label=SCORE&style=flat&color=8a0000"/>
+<a href="https://github.com/FakeBlubba"><img src=".github/assets/action-github.svg" alt="GitHub"/></a> <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/"><img src=".github/assets/action-linkedin.svg" alt="LinkedIn"/></a>
 
 </td>
 </tr>
@@ -24,19 +24,13 @@ $ whoami
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>
 
-> [!NOTE]
-> I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS.
+<img src=".github/assets/alert-bio.svg" alt="I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS." width="820"/>
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>
 
 ## What I work on
 
-| Area | Detail |
-|---|---|
-| `RAG pipelines` | embedding indexing, vector stores, retrieval orchestration |
-| `LLM agents` | multi-agent systems, tool use, monitoring agents |
-| `Cloud infra` | AWS Lambda · DynamoDB · Bedrock · Terraform · Packer |
-| `Backend services` | FastAPI · document ingestion · entity extraction |
+<img src=".github/assets/work-rows.svg" alt="What I work on: RAG pipelines, LLM agents, Cloud infra, Backend services" width="820"/>
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>
 
@@ -45,22 +39,15 @@ $ whoami
 <!-- TN:TECH -->
 **LOADOUT · AI/ML**
 
-![Python](https://img.shields.io/badge/Python-252525?style=flat-square&logo=python&logoColor=f0f0f0)
-![FastAPI](https://img.shields.io/badge/FastAPI-252525?style=flat-square&logo=fastapi&logoColor=f0f0f0)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-252525?style=flat-square&logo=tensorflow&logoColor=f0f0f0)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-252525?style=flat-square&logo=scikit-learn&logoColor=f0f0f0)
+<img src=".github/assets/chips-tech-ai-ml.svg" alt="Python, FastAPI, TensorFlow, scikit-learn"/>
 
 **LOADOUT · Cloud & Infra**
 
-![AWS](https://img.shields.io/badge/AWS-252525?style=flat-square&logo=amazon-aws&logoColor=f0f0f0)
-![Terraform](https://img.shields.io/badge/Terraform-252525?style=flat-square&logo=terraform&logoColor=f0f0f0)
-![Docker](https://img.shields.io/badge/Docker-252525?style=flat-square&logo=docker&logoColor=f0f0f0)
+<img src=".github/assets/chips-tech-cloud-infra.svg" alt="AWS, Terraform, Docker"/>
 
 **LOADOUT · Databases**
 
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-252525?style=flat-square&logo=postgresql&logoColor=f0f0f0)
-![MongoDB](https://img.shields.io/badge/MongoDB-252525?style=flat-square&logo=mongodb&logoColor=f0f0f0)
-![DynamoDB](https://img.shields.io/badge/DynamoDB-252525?style=flat-square&logo=amazon-dynamodb&logoColor=f0f0f0)
+<img src=".github/assets/chips-tech-databases.svg" alt="PostgreSQL, MongoDB, DynamoDB"/>
 <!-- /TN:TECH -->
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>
@@ -70,23 +57,23 @@ $ whoami
 <!-- TN:PROJECTS -->
 <img src=".github/assets/section-label-projects.svg" alt="$ ls projects/"/>
 
-### [FrameDeployer](https://github.com/FakeBlubba/FrameDeployer)
+<a href="https://github.com/FakeBlubba/FrameDeployer"><img src=".github/assets/project-name-framedeployer.svg" alt="FrameDeployer"/></a>
 
 Automated video generation from trending topics: NLP summarization, sentiment analysis, TTS, subtitle sync
 
-![Python](https://img.shields.io/badge/Python-008cb0?style=flat-square) ![NLP](https://img.shields.io/badge/NLP-00a855?style=flat-square)
+<img src=".github/assets/project-tags-framedeployer.svg" alt="Python, NLP"/>
 
-### [depression-pre-diagnose-model](https://github.com/FakeBlubba/depression-pre-diagnose-model)
+<a href="https://github.com/FakeBlubba/depression-pre-diagnose-model"><img src=".github/assets/project-name-depression-pre-diagnose-model.svg" alt="depression-pre-diagnose-model"/></a>
 
 BERT-based NLP classifier for depression symptom detection from text and audio
 
-![BERT](https://img.shields.io/badge/BERT-d99700?style=flat-square) ![Research](https://img.shields.io/badge/Research-252525?style=flat-square)
+<img src=".github/assets/project-tags-depression-pre-diagnose-model.svg" alt="BERT, Research"/>
 
-### [MAADB](https://github.com/FakeBlubba/MAADB)
+<a href="https://github.com/FakeBlubba/MAADB"><img src=".github/assets/project-name-maadb.svg" alt="MAADB"/></a>
 
 Sentiment analysis on tweets: MongoDB MapReduce vs PostgreSQL performance comparison
 
-![MongoDB](https://img.shields.io/badge/MongoDB-00a855?style=flat-square) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-008cb0?style=flat-square)
+<img src=".github/assets/project-tags-maadb.svg" alt="MongoDB, PostgreSQL"/>
 <!-- /TN:PROJECTS -->
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>
@@ -108,7 +95,7 @@ Sentiment analysis on tweets: MongoDB MapReduce vs PostgreSQL performance compar
 <details>
 <summary>▸ $ make profile</summary>
 
-Questo profilo è generato da uno script (`scripts/generate-readme-theme.mjs`) che legge i design token del pacchetto privato `@fakeblubba/terminal-noir` e produce i colori dei badge, le card e il divisore a scacchi qui sopra. Una GitHub Action lo rilancia quando il pacchetto cambia versione.
+Questo profilo è generato da uno script (`scripts/generate-readme-theme.mjs`) che legge i design token del pacchetto privato `@fakeblubba/terminal-noir` e produce ogni badge, chip, alert e card SVG qui sopra usando i contratti dei componenti reali del design system. Una GitHub Action lo rilancia quando il pacchetto cambia versione.
 
 </details>
 

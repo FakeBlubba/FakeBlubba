@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="100" viewBox="0 0 820 100" role="img" aria-label="$ cat about.md: I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS.">
+  <rect x="0.5" y="0.5" width="819" height="99" rx="8" fill="#1e1e1e" stroke="#252525"/>
+  <rect x="0" y="0" width="4" height="100" fill="#008cb0"/>
+  <svg x="20" y="18" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#008cb0" color="#008cb0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 11.2v5"/><circle cx="12" cy="8.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+  <text x="52" y="32" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="14" font-weight="600" letter-spacing="0.04em" fill="#008cb0">$ cat about.md</text>
+  <text x="52" y="58" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="14" fill="#b3b3b3">I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM</text>
+  <text x="52" y="80" font-family="'IBM Plex Sans', system-ui, sans-serif" font-size="14" fill="#b3b3b3">orchestration, agentic architectures, and cloud infrastructure on AWS.</text>
+</svg>

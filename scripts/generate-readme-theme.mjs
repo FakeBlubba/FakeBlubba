@@ -42,9 +42,28 @@ function escapeXml(str) {
 }
 
 const MONO_CHAR_WIDTH_RATIO = 0.6; // IBM Plex Mono average advance width relative to font-size
+const SANS_CHAR_WIDTH_RATIO = 0.52; // IBM Plex Sans average advance width relative to font-size, for line-wrap estimates
 
 function monoTextWidth(text, fontSize) {
   return Math.ceil(text.length * fontSize * MONO_CHAR_WIDTH_RATIO);
+}
+
+function wrapText(text, fontSize, maxWidth) {
+  const maxChars = Math.max(1, Math.floor(maxWidth / (fontSize * SANS_CHAR_WIDTH_RATIO)));
+  const words = text.split(' ');
+  const lines = [];
+  let current = '';
+  for (const word of words) {
+    const candidate = current ? `${current} ${word}` : word;
+    if (candidate.length > maxChars && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = candidate;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
 }
 
 function hex(tokens, name) {
@@ -52,12 +71,22 @@ function hex(tokens, name) {
 }
 
 const MONO_FONT = "'IBM Plex Mono', ui-monospace, monospace";
+const SANS_FONT = "'IBM Plex Sans', system-ui, sans-serif";
 
-// B4 in the "Profilo GitHub 8-bit" design (Terminal Noir Claude Design project,
-// projectId 8f18d26f-a7f9-495b-9bc0-463801aa77c7): an 8x8 checker tile repeated
-// across the width, alternating the surface colour with the brand red at low
-// opacity. The design calls for a PNG tile; a generated SVG achieves the same
-// pixel-grid look without needing a rasterizer in this pipeline.
+// Icon path data copied verbatim from @fakeblubba/terminal-noir/assets/icons.svg —
+// inlined so each generated file is self-contained (no external asset reference).
+const ICON_DATA_PIPELINE = '<circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/><path d="M7.2 12h2.6M14.2 12h2.6"/>';
+const ICON_STATUS_SPARKLE = '<path d="M11 4l1.7 4.6L17 10l-4.3 1.4L11 16l-1.7-4.6L5 10l4.3-1.4zM18.5 15l.7 1.9 1.8.6-1.8.6-.7 1.9-.7-1.9-1.8-.6 1.8-.6z"/>';
+const ICON_DATA_CLOUD = '<path d="M7 18a4.5 4.5 0 0 1 .4-9 6 6 0 0 1 11.3 2 3.8 3.8 0 0 1-.7 7z"/>';
+const ICON_DATA_SERVER = '<path d="M4 4h16v6H4zM4 14h16v6H4z"/><circle cx="7.5" cy="7" r="1.1" fill="currentColor" stroke="none"/><circle cx="7.5" cy="17" r="1.1" fill="currentColor" stroke="none"/>';
+const ICON_STATUS_INFO_CIRCLE = '<circle cx="12" cy="12" r="8"/><path d="M12 11.2v5"/><circle cx="12" cy="8.4" r="1.1" fill="currentColor" stroke="none"/>';
+
+function buildIcon(pathMarkup, x, y, size, color) {
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" color="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${pathMarkup}</svg>`;
+}
+
+// --- Divider (B4): 8x8 checker tile, terminal-noir Divider component reinterpreted ---
+
 function buildDividerSvg(tokens) {
   const width = 820;
   const height = 8;
@@ -89,40 +118,179 @@ function buildSectionLabelSvg(tokens, text) {
 </svg>`;
 }
 
-// B2: role / location / focus chips — static, not links (design intent: readers
-// understand the profile before they click anything). "Availability" from the
-// original design brief is deliberately omitted — that's a status claim about
-// the person, not a fact this generator has any business asserting.
-const IDENTITY_CHIPS = ['AI ENGINEER', 'TORINO', 'RAG · LLM'];
+// --- Chip (Fase 3, 3.6 CHIPS): tone drives colour. "selected" is the schema's
+// filled-accent state; every other tone is an outline on the surface colour. ---
+
+function chipToneColors(tokens, tone) {
+  if (tone === 'selected') {
+    return { bg: tokens['color-action-primary'], border: tokens['color-action-primary'], text: tokens['color-text-on-accent'] };
+  }
+  const borderToken = {
+    neutral: 'color-border-interactive',
+    success: 'color-feedback-success',
+    warning: 'color-feedback-warning',
+    danger: 'color-feedback-danger',
+    info: 'color-feedback-info',
+  }[tone];
+  return { bg: tokens['color-bg-surface-raised'], border: tokens[borderToken], text: tokens['color-text-primary'] };
+}
+
+function buildChipRowSvg(tokens, items) {
+  const fontSize = 12;
+  const paddingX = 12;
+  const height = 26;
+  const gap = 8;
+
+  let x = 0;
+  const chips = items.map((item) => {
+    const c = chipToneColors(tokens, item.tone);
+    const textWidth = monoTextWidth(item.label, fontSize);
+    const chipWidth = textWidth + paddingX * 2;
+    const chipX = x;
+    x += chipWidth + gap;
+    return `<g transform="translate(${chipX},0)">
+  <rect x="0.5" y="0.5" width="${chipWidth - 1}" height="${height - 1}" rx="${height / 2}" fill="${c.bg}" stroke="${c.border}"/>
+  <text x="${chipWidth / 2}" y="${height / 2 + fontSize / 3}" text-anchor="middle" font-family="${MONO_FONT}" font-size="${fontSize}" fill="${c.text}">${escapeXml(item.label)}</text>
+</g>`;
+  }).join('\n');
+
+  const width = x - gap;
+  const ariaLabel = items.map((i) => i.label).join(', ');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
+${chips}
+</svg>`;
+}
+
+// --- Button (Fase 6): variant drives colour. "link" renders as bare coloured
+// text (no box) — used where the button IS the clickable element's whole label. ---
+
+function buttonVariantStyle(tokens, variant) {
+  switch (variant) {
+    case 'primary':
+      return { bg: tokens['color-action-primary'], border: tokens['color-border-accent'], text: tokens['color-text-on-accent'] };
+    case 'secondary':
+      return { bg: tokens['color-bg-surface-raised'], border: tokens['color-border-default'], text: tokens['color-text-primary'] };
+    case 'link':
+      return { bg: null, border: null, text: tokens['color-text-link'] };
+    default:
+      throw new Error(`Unknown button variant: ${variant}`);
+  }
+}
+
+function buildButtonSvg(tokens, label, variant) {
+  const style = buttonVariantStyle(tokens, variant);
+
+  if (variant === 'link') {
+    const fontSize = 20;
+    const paddingY = 4;
+    const width = monoTextWidth(label, fontSize);
+    const height = fontSize + paddingY * 2;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(label)}">
+  <text x="0" y="${height / 2 + fontSize / 3}" font-family="${MONO_FONT}" font-size="${fontSize}" font-weight="600" fill="${style.text}">${escapeXml(label)}</text>
+</svg>`;
+  }
+
+  const fontSize = 13;
+  const paddingX = 16;
+  const height = 36;
+  const width = monoTextWidth(label, fontSize) + paddingX * 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(label)}">
+  <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="8" fill="${style.bg}" stroke="${style.border}"/>
+  <text x="${width / 2}" y="${height / 2 + fontSize / 3}" text-anchor="middle" font-family="${MONO_FONT}" font-size="${fontSize}" font-weight="500" fill="${style.text}">${escapeXml(label)}</text>
+</svg>`;
+}
+
+// --- Alert (Fase 5, 5.3): level=section, severity=info. A custom title is only
+// possible because this is a generated image — GitHub's native `> [!NOTE]`
+// syntax fixes its own header text and can't be recoloured at all. ---
+
+function buildAlertSvg(tokens, title, description) {
+  const width = 820;
+  const paddingX = 20;
+  const paddingTop = 18;
+  const iconSize = 20;
+  const titleFontSize = 14;
+  const bodyFontSize = 14;
+  const lineHeight = 22;
+  const textX = paddingX + iconSize + 12;
+  const textMaxWidth = width - textX - paddingX;
+  const accent = tokens['color-feedback-info'];
+
+  const lines = wrapText(description, bodyFontSize, textMaxWidth);
+  const titleY = paddingTop + 14;
+  const firstLineY = titleY + 26;
+  const bodyLines = lines
+    .map((line, i) => `<text x="${textX}" y="${firstLineY + i * lineHeight}" font-family="${SANS_FONT}" font-size="${bodyFontSize}" fill="${tokens['color-text-secondary']}">${escapeXml(line)}</text>`)
+    .join('\n  ');
+  const height = firstLineY + (lines.length - 1) * lineHeight + 20;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(title)}: ${escapeXml(description)}">
+  <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="8" fill="${tokens['color-bg-surface']}" stroke="${tokens['color-border-subtle']}"/>
+  <rect x="0" y="0" width="4" height="${height}" fill="${accent}"/>
+  ${buildIcon(ICON_STATUS_INFO_CIRCLE, paddingX, paddingTop, iconSize, accent)}
+  <text x="${textX}" y="${titleY}" font-family="${MONO_FONT}" font-size="${titleFontSize}" font-weight="600" letter-spacing="0.04em" fill="${accent}">${escapeXml(title)}</text>
+  ${bodyLines}
+</svg>`;
+}
+
+// --- Data table (Fase 8, 8.1): 2 columns, icon + label cell / plain detail cell ---
+
+const WORK_ITEMS = [
+  { label: 'RAG pipelines', detail: 'embedding indexing, vector stores, retrieval orchestration', icon: ICON_DATA_PIPELINE },
+  { label: 'LLM agents', detail: 'multi-agent systems, tool use, monitoring agents', icon: ICON_STATUS_SPARKLE },
+  { label: 'Cloud infra', detail: 'AWS Lambda · DynamoDB · Bedrock · Terraform · Packer', icon: ICON_DATA_CLOUD },
+  { label: 'Backend services', detail: 'FastAPI · document ingestion · entity extraction', icon: ICON_DATA_SERVER },
+];
+
+function buildWorkRowsSvg(tokens) {
+  const width = 820;
+  const rowHeight = 46;
+  const topPadding = 18;
+  const bottomPadding = 18;
+  const height = topPadding + WORK_ITEMS.length * rowHeight + bottomPadding;
+  const iconX = 24;
+  const labelX = 56;
+  const detailX = 264;
+
+  const rows = WORK_ITEMS.map((item, index) => {
+    const rowTop = topPadding + index * rowHeight;
+    const textY = rowTop + rowHeight / 2 + 5;
+    const divider = index > 0
+      ? `<line x1="24" y1="${rowTop}" x2="${width - 24}" y2="${rowTop}" stroke="${tokens['color-border-subtle']}" stroke-width="1"/>`
+      : '';
+    return `${divider}
+  ${buildIcon(item.icon, iconX, textY - 14, 18, tokens['color-text-link'])}
+  <text x="${labelX}" y="${textY}" font-family="${MONO_FONT}" font-size="13" font-weight="500" letter-spacing="0.06em" fill="${tokens['color-text-link']}">${escapeXml(item.label)}</text>
+  <text x="${detailX}" y="${textY}" font-family="${SANS_FONT}" font-size="13" fill="${tokens['color-text-secondary']}">${escapeXml(item.detail)}</text>`;
+  }).join('\n');
+
+  const ariaLabel = `What I work on: ${WORK_ITEMS.map((i) => i.label).join(', ')}`;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeXml(ariaLabel)}">
+  <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="8" fill="${tokens['color-bg-surface']}" stroke="${tokens['color-border-subtle']}"/>
+  ${rows}
+</svg>`;
+}
+
+// --- Content data ---
+
+const IDENTITY_CHIPS = [
+  { label: 'AI ENGINEER', tone: 'selected' },
+  { label: 'TORINO', tone: 'neutral' },
+  { label: 'RAG · LLM', tone: 'neutral' },
+];
 
 const SOCIAL_LINKS = [
-  { label: 'LinkedIn', logo: 'linkedin', url: 'https://www.linkedin.com/in/federico-bianchetti-6b5464204/' },
-  { label: 'GitHub', logo: 'github', url: 'https://github.com/FakeBlubba' },
+  { label: 'GitHub', url: 'https://github.com/FakeBlubba', variant: 'primary' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/federico-bianchetti-6b5464204/', variant: 'secondary' },
 ];
 
-const TECH_ITEMS = [
-  { group: 'AI/ML', label: 'Python', logo: 'python' },
-  { group: 'AI/ML', label: 'FastAPI', logo: 'fastapi' },
-  { group: 'AI/ML', label: 'TensorFlow', logo: 'tensorflow' },
-  { group: 'AI/ML', label: 'scikit-learn', logo: 'scikit-learn' },
-  { group: 'Cloud & Infra', label: 'AWS', logo: 'amazon-aws' },
-  { group: 'Cloud & Infra', label: 'Terraform', logo: 'terraform' },
-  { group: 'Cloud & Infra', label: 'Docker', logo: 'docker' },
-  { group: 'Databases', label: 'PostgreSQL', logo: 'postgresql' },
-  { group: 'Databases', label: 'MongoDB', logo: 'mongodb' },
-  { group: 'Databases', label: 'DynamoDB', logo: 'amazon-dynamodb' },
+const TECH_GROUPS = [
+  { group: 'AI/ML', items: ['Python', 'FastAPI', 'TensorFlow', 'scikit-learn'] },
+  { group: 'Cloud & Infra', items: ['AWS', 'Terraform', 'Docker'] },
+  { group: 'Databases', items: ['PostgreSQL', 'MongoDB', 'DynamoDB'] },
 ];
-
-// Maps the data-table contract's `tone` enum onto terminal-noir feedback tokens,
-// so a project tag's colour carries the same meaning it would inside the real
-// component, instead of being picked for decoration.
-const TONE_TOKEN = {
-  neutral: 'color-bg-surface-raised',
-  success: 'color-feedback-success',
-  warning: 'color-feedback-warning',
-  danger: 'color-feedback-danger',
-  info: 'color-feedback-info',
-};
 
 const PROJECTS = [
   {
@@ -145,25 +313,8 @@ const PROJECTS = [
   },
 ];
 
-function shieldsLabelEncode(label) {
-  return encodeURIComponent(label.replace(/-/g, '--'));
-}
-
-function shieldsBadgeUrl(tokens, label, logo) {
-  const bg = hex(tokens, 'color-bg-surface-raised');
-  const logoColor = hex(tokens, 'color-text-primary');
-  return `https://img.shields.io/badge/${shieldsLabelEncode(label)}-${bg}?style=flat-square&logo=${logo}&logoColor=${logoColor}`;
-}
-
-// B2's exact spec: solid brand red, flat-square (sharp corners match the 8-bit assets).
-function identityBadgeUrl(tokens, text) {
-  const color = hex(tokens, 'color-action-primary');
-  return `https://img.shields.io/badge/${shieldsLabelEncode(text)}-${color}?style=flat-square`;
-}
-
-function toneTagUrl(tokens, label, tone) {
-  const color = hex(tokens, TONE_TOKEN[tone]);
-  return `https://img.shields.io/badge/${shieldsLabelEncode(label)}-${color}?style=flat-square`;
+function slug(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
 function statsCardUrl(tokens, username) {
@@ -182,22 +333,45 @@ function topLangsUrl(tokens, username) {
   return `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&hide_border=false&layout=compact&bg_color=${bg}&title_color=${title}&text_color=${text}&border_color=${border}&border_radius=8`;
 }
 
-// B3's playful touch: relabel the visit counter like an arcade score. The number
-// itself is still the real count komarev reports — only the label changes.
 function komarevUrl(tokens, username) {
   const color = hex(tokens, 'color-action-primary');
   return `https://komarev.com/ghpvc/?username=${username}&label=SCORE&style=flat&color=${color}`;
 }
 
-// B1 (avatar + "$ whoami" + name + role) and B2/B3 (identity chips + action
-// badges) combined into one header block, laid out with a two-column HTML
-// table so the avatar sits beside the text instead of stacked above it.
-function buildHeaderMarkdown(tokens) {
-  const chips = IDENTITY_CHIPS
-    .map((text) => `<img alt="${escapeXml(text)}" src="${identityBadgeUrl(tokens, text)}"/>`)
-    .join(' ');
+// --- Assembly: everything visual is a generated file using terminal-noir's
+// own component contracts and IBM Plex fonts — nothing here falls back to
+// GitHub's default markdown theme or a third-party badge service's font. ---
+
+function buildAssets(tokens) {
+  const files = [
+    { path: path.join(ASSETS_DIR, 'divider.svg'), svg: buildDividerSvg(tokens) },
+    { path: path.join(ASSETS_DIR, 'section-label-projects.svg'), svg: buildSectionLabelSvg(tokens, '$ ls projects/') },
+    { path: path.join(ASSETS_DIR, 'work-rows.svg'), svg: buildWorkRowsSvg(tokens) },
+    { path: path.join(ASSETS_DIR, 'alert-bio.svg'), svg: buildAlertSvg(tokens, '$ cat about.md', 'I build AI-powered backend systems for enterprise clients. My day-to-day is RAG pipelines, LLM orchestration, agentic architectures, and cloud infrastructure on AWS.') },
+    { path: path.join(ASSETS_DIR, 'chips-identity.svg'), svg: buildChipRowSvg(tokens, IDENTITY_CHIPS) },
+  ];
+
+  for (const link of SOCIAL_LINKS) {
+    files.push({ path: path.join(ASSETS_DIR, `action-${slug(link.label)}.svg`), svg: buildButtonSvg(tokens, link.label, link.variant) });
+  }
+
+  for (const group of TECH_GROUPS) {
+    const items = group.items.map((label) => ({ label, tone: 'neutral' }));
+    files.push({ path: path.join(ASSETS_DIR, `chips-tech-${slug(group.group)}.svg`), svg: buildChipRowSvg(tokens, items) });
+  }
+
+  for (const project of PROJECTS) {
+    files.push({ path: path.join(ASSETS_DIR, `project-name-${slug(project.name)}.svg`), svg: buildButtonSvg(tokens, project.name, 'link') });
+    files.push({ path: path.join(ASSETS_DIR, `project-tags-${slug(project.name)}.svg`), svg: buildChipRowSvg(tokens, project.tags) });
+  }
+
+  return files;
+}
+
+function buildHeaderMarkdown() {
+  const chips = `<img src=".github/assets/chips-identity.svg" alt="${escapeXml(IDENTITY_CHIPS.map((c) => c.label).join(', '))}"/>`;
   const actions = SOCIAL_LINKS
-    .map((link) => `<a href="${link.url}"><img alt="${escapeXml(link.label)}" src="${shieldsBadgeUrl(tokens, link.label, link.logo)}"/></a>`)
+    .map((link) => `<a href="${link.url}"><img src=".github/assets/action-${slug(link.label)}.svg" alt="${escapeXml(link.label)}"/></a>`)
     .join(' ');
 
   return `<table>
@@ -216,37 +390,27 @@ $ whoami
 
 ${chips}
 
-${actions} <img alt="Profile views" src="${komarevUrl(tokens, 'FakeBlubba')}"/>
+${actions}
 
 </td>
 </tr>
 </table>`;
 }
 
-function buildTechMarkdown(tokens) {
-  const groups = [...new Set(TECH_ITEMS.map((item) => item.group))];
-  return groups
-    .map((group) => {
-      const badges = TECH_ITEMS.filter((item) => item.group === group)
-        .map((item) => `![${item.label}](${shieldsBadgeUrl(tokens, item.label, item.logo)})`)
-        .join('\n');
-      return `**LOADOUT · ${group}**\n\n${badges}`;
-    })
+function buildTechMarkdown() {
+  return TECH_GROUPS
+    .map((group) => `**LOADOUT · ${group.group}**\n\n<img src=".github/assets/chips-tech-${slug(group.group)}.svg" alt="${escapeXml(group.items.join(', '))}"/>`)
     .join('\n\n');
 }
 
-// B8: project cards instead of a table — name is the header, not squeezed into
-// a narrow column next to a long description. Real repo links stay real links.
-function buildProjectsMarkdown(tokens) {
+function buildProjectsMarkdown() {
   const cards = PROJECTS.map((project) => {
-    const tags = project.tags
-      .map((tag) => `![${tag.label}](${toneTagUrl(tokens, tag.label, tag.tone)})`)
-      .join(' ');
-    return `### [${project.name}](${project.url})
+    const nameSlug = slug(project.name);
+    return `<a href="${project.url}"><img src=".github/assets/project-name-${nameSlug}.svg" alt="${escapeXml(project.name)}"/></a>
 
 ${project.what}
 
-${tags}`;
+<img src=".github/assets/project-tags-${nameSlug}.svg" alt="${escapeXml(project.tags.map((t) => t.label).join(', '))}"/>`;
   }).join('\n\n');
 
   return `<img src=".github/assets/section-label-projects.svg" alt="$ ls projects/"/>
@@ -294,16 +458,13 @@ function main() {
   const cssText = readFileSync(TOKENS_CSS_PATH, 'utf8');
   const tokens = parseTokens(cssText);
 
-  const generatedFiles = [
-    { path: path.join(ASSETS_DIR, 'divider.svg'), svg: buildDividerSvg(tokens) },
-    { path: path.join(ASSETS_DIR, 'section-label-projects.svg'), svg: buildSectionLabelSvg(tokens, '$ ls projects/') },
-  ];
+  const generatedFiles = buildAssets(tokens);
 
   const markerNames = ['HEADER', 'TECH', 'PROJECTS', 'STATS'];
   let readme = readFileSync(README_PATH, 'utf8');
-  readme = replaceMarkerRegion(readme, 'HEADER', buildHeaderMarkdown(tokens));
-  readme = replaceMarkerRegion(readme, 'TECH', buildTechMarkdown(tokens));
-  readme = replaceMarkerRegion(readme, 'PROJECTS', buildProjectsMarkdown(tokens));
+  readme = replaceMarkerRegion(readme, 'HEADER', buildHeaderMarkdown());
+  readme = replaceMarkerRegion(readme, 'TECH', buildTechMarkdown());
+  readme = replaceMarkerRegion(readme, 'PROJECTS', buildProjectsMarkdown());
   readme = replaceMarkerRegion(readme, 'STATS', buildStatsMarkdown(tokens));
 
   verify(readme, generatedFiles, markerNames);
@@ -314,7 +475,7 @@ function main() {
   }
   writeFileSync(README_PATH, readme, 'utf8');
 
-  console.log('Generated:', generatedFiles.map((f) => f.path).join(', '), 'and updated README.md');
+  console.log('Generated:', generatedFiles.length, 'assets and updated README.md');
 }
 
 main();

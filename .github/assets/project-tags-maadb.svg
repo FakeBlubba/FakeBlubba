@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="179" height="26" viewBox="0 0 179 26" role="img" aria-label="MongoDB, PostgreSQL">
+<g transform="translate(0,0)">
+  <rect x="0.5" y="0.5" width="74" height="25" rx="13" fill="#252525" stroke="#00a855"/>
+  <text x="37.5" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">MongoDB</text>
+</g>
+<g transform="translate(83,0)">
+  <rect x="0.5" y="0.5" width="95" height="25" rx="13" fill="#252525" stroke="#008cb0"/>
+  <text x="48" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">PostgreSQL</text>
+</g>
+</svg>

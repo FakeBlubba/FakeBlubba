@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="143" height="26" viewBox="0 0 143 26" role="img" aria-label="BERT, Research">
+<g transform="translate(0,0)">
+  <rect x="0.5" y="0.5" width="52" height="25" rx="13" fill="#252525" stroke="#d99700"/>
+  <text x="26.5" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">BERT</text>
+</g>
+<g transform="translate(61,0)">
+  <rect x="0.5" y="0.5" width="81" height="25" rx="13" fill="#252525" stroke="#777777"/>
+  <text x="41" y="17" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#f0f0f0">Research</text>
+</g>
+</svg>
