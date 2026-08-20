@@ -374,12 +374,12 @@ function buildHeaderMarkdown() {
     .map((link) => `<a href="${link.url}"><img src=".github/assets/action-${slug(link.label)}.svg" alt="${escapeXml(link.label)}"/></a>`)
     .join(' ');
 
-  return `<table>
+  return `<table width="100%">
 <tr>
 <td width="140" align="center">
   <img src=".github/assets/avatar-8bit.png" width="120" height="120" alt="Avatar 8-bit di Federico Bianchetti"/>
 </td>
-<td>
+<td width="100%">
 
 \`\`\`
 $ whoami
