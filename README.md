@@ -1,10 +1,10 @@
 <!-- TN:HEADER -->
 <table width="100%">
 <tr>
-<td width="140" align="center">
+<td width="140" align="center" valign="top">
   <img src=".github/assets/avatar-8bit.png" width="120" height="120" alt="Avatar 8-bit di Federico Bianchetti"/>
 </td>
-<td width="100%">
+<td valign="middle">
 
 ```
 $ whoami
@@ -13,13 +13,13 @@ $ whoami
 # Federico Bianchetti
 **AI Engineer · RAG & LLM Systems · Cloud Infrastructure**
 
-<img src=".github/assets/chips-identity.svg" alt="AI ENGINEER, TORINO, RAG · LLM"/>
-
-<a href="https://github.com/FakeBlubba"><img src=".github/assets/action-github.svg" alt="GitHub"/></a> <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/"><img src=".github/assets/action-linkedin.svg" alt="LinkedIn"/></a>
-
 </td>
 </tr>
 </table>
+
+<img src=".github/assets/chips-identity.svg" alt="AI ENGINEER, TORINO, RAG · LLM"/>
+
+<a href="https://github.com/FakeBlubba"><img src=".github/assets/action-github.svg" alt="GitHub"/></a> <a href="https://www.linkedin.com/in/federico-bianchetti-6b5464204/"><img src=".github/assets/action-linkedin.svg" alt="LinkedIn"/></a>
 <!-- /TN:HEADER -->
 
 <img src=".github/assets/divider.svg" alt="" width="820"/>

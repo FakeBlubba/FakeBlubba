@@ -368,18 +368,18 @@ function buildAssets(tokens) {
   return files;
 }
 
-function buildHeaderMarkdown() {
-  const chips = `<img src=".github/assets/chips-identity.svg" alt="${escapeXml(IDENTITY_CHIPS.map((c) => c.label).join(', '))}"/>`;
-  const actions = SOCIAL_LINKS
-    .map((link) => `<a href="${link.url}"><img src=".github/assets/action-${slug(link.label)}.svg" alt="${escapeXml(link.label)}"/></a>`)
-    .join(' ');
-
+// B1 is a table only ("niente altro" per the spec) — B2 (identity chips) and
+// B3 (action buttons) are separate full-width blocks stacked below it, not
+// nested inside B1's text column, matching the wireframe's own block sequence.
+function buildBannerMarkdown() {
+  // <colgroup>/<col> are stripped by GitHub's markdown sanitizer (confirmed
+  // via the markdown API, not assumed) — width goes directly on the <td>.
   return `<table width="100%">
 <tr>
-<td width="140" align="center">
+<td width="140" align="center" valign="top">
   <img src=".github/assets/avatar-8bit.png" width="120" height="120" alt="Avatar 8-bit di Federico Bianchetti"/>
 </td>
-<td width="100%">
+<td valign="middle">
 
 \`\`\`
 $ whoami
@@ -388,13 +388,23 @@ $ whoami
 # Federico Bianchetti
 **AI Engineer · RAG & LLM Systems · Cloud Infrastructure**
 
-${chips}
-
-${actions}
-
 </td>
 </tr>
 </table>`;
+}
+
+function buildIdentityRowMarkdown() {
+  return `<img src=".github/assets/chips-identity.svg" alt="${escapeXml(IDENTITY_CHIPS.map((c) => c.label).join(', '))}"/>`;
+}
+
+function buildActionsRowMarkdown() {
+  return SOCIAL_LINKS
+    .map((link) => `<a href="${link.url}"><img src=".github/assets/action-${slug(link.label)}.svg" alt="${escapeXml(link.label)}"/></a>`)
+    .join(' ');
+}
+
+function buildHeaderMarkdown() {
+  return [buildBannerMarkdown(), buildIdentityRowMarkdown(), buildActionsRowMarkdown()].join('\n\n');
 }
 
 function buildTechMarkdown() {
